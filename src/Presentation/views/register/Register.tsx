@@ -1,8 +1,10 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 
 import { CustomTextInput, RoundedButton } from '@/Presentation/components';
 import useViewModel from './ViewModel';
 import styles from './styles';
+import { useState } from 'react';
+import { ModalPickImage } from '../../components/ModalPickImage/ModalPickImage';
 
 export const RegisterScreen = () => {
 
@@ -14,7 +16,14 @@ export const RegisterScreen = () => {
     onChange: handleChange,
     handleRegister,
     errorMessage,
+    pickImage,
+    file: image,
+    takePhoto,
   } = useViewModel();
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const imgSrc = !image ? require('@/assets/user_image.png') : { uri: image.uri };
   
   return (
     <View style={styles.container}>
@@ -24,8 +33,10 @@ export const RegisterScreen = () => {
       />
 
       <View style={styles.logoContainer}>
-        <Image style={styles.logoImage} source={require('@/assets/user_image.png')} />
-        <Text style={styles.logoText}>SELECCIONA UNA IMAGEN</Text>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Image style={styles.logoImage} source={imgSrc} />
+          <Text style={styles.logoText}>SELECCIONA UNA IMAGEN</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.formContainer}>
@@ -76,6 +87,13 @@ export const RegisterScreen = () => {
           </View>
         </ScrollView>
       </View>
+
+      <ModalPickImage
+        openGallery={pickImage}
+        openCamera={takePhoto}
+        modalUseState={modalVisible}
+        setModalUseState={setModalVisible}
+      />
     </View>
   );
 };

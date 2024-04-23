@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { GetUserLocalUseCase } from "@/Domain/useCases/userLocal/GetUserLocal";
 import { User } from "@/Domain/entities/User";
 
-export const useUserLocal = () => {
+const useUserLocal = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const getUserSession = async () => {
@@ -19,3 +19,5 @@ export const useUserLocal = () => {
     getUserSession
   }
 }
+
+export default useUserLocal;

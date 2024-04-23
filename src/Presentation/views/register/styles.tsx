@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { RoundedButton } from '../../components/RoundedButton/RoundedButton';
 
 export default StyleSheet.create({
   container: {
@@ -20,6 +21,8 @@ export default StyleSheet.create({
   logoImage: {
     width: 100,
     height: 100,
+    borderRadius: 50,
+    alignSelf: 'center',
   },
   logoText: {
     color: '#fff',
