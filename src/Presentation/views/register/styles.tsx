@@ -36,10 +36,11 @@ export default StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     bottom: 0,
-    height: '58%',
+    height: '65%',
     padding: 20,
     position: 'absolute',
     width: '100%',
+    marginBottom: 10,
   },
   formText: {
     color: '#000',

@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Platform,
   ToastAndroid,
-  ScrollView,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback, 
+  Keyboard,
 } from 'react-native';
 
 import { RootStackParams } from 'App';
@@ -48,76 +49,61 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   }, [errorMessage]);
 
   return (
-    <View
-      style={styles.container}
-    >
-      <Image
-        style={styles.imageBackground}
-        source={require('@/assets/chef.jpg')}
-      />
+    <KeyboardAvoidingView
+      behavior={isAndroid ? 'height' : 'padding'}
+      style={styles.container}>
+      <View>
+        <Image
+          style={styles.imageBackground}
+          source={require('@/assets/chef.jpg')}
+        />
 
-      <View style={styles.logoContainer}>
-        <Image style={styles.logoImage} source={require('@/assets/logo.png')} />
-        <Text style={styles.logoText}>FOOD APP</Text>
-      </View>
-
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        style={{
-          bottom: 0,
-          height: '70%',
-          
-          position: 'absolute',
-          width: '100%',
-        }}
-        
-        automaticallyAdjustKeyboardInsets
-        automaticallyAdjustsScrollIndicatorInsets
-      >
-        <View style={{
-          backgroundColor: '#fff',
-          borderTopLeftRadius: 40,
-          borderTopRightRadius: 40,
-          padding: 20,
-          height: 550,
-          marginTop: 250,
-        }}>
-          <Text style={styles.formText}>INGRESAR</Text>
-
-          <CustomTextInput
-            name="email"
-            value={email}
-            handleChange={handleChange}
-            srcImage={require('@/assets/email.png')}
-            placeholder="Correo electrónico"
-            keyboardType="email-address"
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logoImage}
+            source={require('@/assets/logo.png')}
           />
-
-          <CustomTextInput
-            name="password"
-            value={password}
-            handleChange={handleChange}
-            srcImage={require('@/assets/password.png')}
-            placeholder="Contraseña"
-            keyboardType="default"
-            secureTextEntry={true}
-          />
-
-          <View style={{ marginTop: 40 }}>
-            <RoundedButton text="ENTRAR" onPress={handleLogin} />
-          </View>
-
-          <View style={styles.formRegister}>
-            <Text>No Tienes cuenta?</Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('RegisterScreen');
-              }}>
-              <Text style={styles.formRegisterText}>Registrate</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.logoText}>FOOD APP</Text>
         </View>
-      </ScrollView>
-    </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.formContainer}>
+            <Text style={styles.formText}>INGRESAR</Text>
+
+            <CustomTextInput
+              name="email"
+              value={email}
+              handleChange={handleChange}
+              srcImage={require('@/assets/email.png')}
+              placeholder="Correo electrónico"
+              keyboardType="email-address"
+            />
+
+            <CustomTextInput
+              name="password"
+              value={password}
+              handleChange={handleChange}
+              srcImage={require('@/assets/password.png')}
+              placeholder="Contraseña"
+              keyboardType="default"
+              secureTextEntry={true}
+            />
+
+            <View style={{ marginTop: 40 }}>
+              <RoundedButton text="ENTRAR" onPress={handleLogin} />
+            </View>
+
+            <View style={styles.formRegister}>
+              <Text>No Tienes cuenta?</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('RegisterScreen');
+                }}>
+                <Text style={styles.formRegisterText}>Registrate</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
