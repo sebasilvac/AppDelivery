@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { RegisterAuthUseCase } from '@/Domain/useCases/auth/registerAuth';
 import { User } from '@/Domain/entities/User';
-import { useImagePicker } from '@/Presentation/hooks';
+import { useImagePicker, useUserLocal } from '@/Presentation/hooks';
+import { RegisterWithImageAuthUseCase } from '@/Domain/useCases/auth/registerWithImageAuth';
+import { SaveUserLocalUseCase } from '@/Domain/useCases/userLocal/SaveUserLocal';
 
 const RegisterViewModel = () => {
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [values, setValues] = useState({
     fullName: '',
@@ -12,7 +15,8 @@ const RegisterViewModel = () => {
     password: '',
     confirmPassword: '',
   });
-
+  
+  const { user, getUserSession } = useUserLocal();
   const { file, setFile, pickImage, takePhoto} = useImagePicker();
 
   useEffect(() => {
@@ -23,7 +27,6 @@ const RegisterViewModel = () => {
 
   useEffect(() => {
     if(file) {
-      console.log('ImagePicker: ', file.uri)
       onChange('image', file.uri);
     }
   }, [file]);
@@ -40,18 +43,32 @@ const RegisterViewModel = () => {
       return false;
     }
 
+    setLoading(true);
+
     const user: User = {
       fullName: values.fullName,
       email: values.email,
       password: values.password,
     }
 
-    const response = await RegisterAuthUseCase(user);
+    //const response = await RegisterAuthUseCase(user);
+    const response = file ? await RegisterWithImageAuthUseCase(user, file) : await RegisterAuthUseCase(user);
+    setLoading(false);
     
     if (!response.success) {
       setErrorMessage(response.message);
       return;
     }
+
+    await SaveUserLocalUseCase({
+      id: response.data.id,
+      fullName: response.data.fullName,
+      email: response.data.email,
+      sessionToken: response.data.token,
+      password: '',
+    });
+
+    getUserSession();
 
     return response.data;
   }
@@ -79,6 +96,8 @@ const RegisterViewModel = () => {
     pickImage,
     file,
     takePhoto,
+    user,
+    loading,
   }
 }
 

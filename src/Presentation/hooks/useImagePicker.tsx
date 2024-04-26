@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react"
 import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'expo-camera';
+// import { Camera } from 'expo-camera';
 
 const useImagePicker = () => {
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
 
-  const [cameraPermission, setCameraPermission] = useState(false);
+  // const [cameraPermission, setCameraPermission] = useState(false);
 
-  const permissionFunction = async () => {
-    const cameraPermission = await Camera.requestCameraPermissionsAsync();
-    setCameraPermission(cameraPermission.status === 'granted');
+  // const permissionFunction = async () => {
+  //   const cameraPermission = await Camera.requestCameraPermissionsAsync();
+  //   setCameraPermission(cameraPermission.status === 'granted');
 
-    if (
-      cameraPermission.status !== 'granted'
-    ) {
-      alert('Permission for media access needed.');
-    }
-  }
+  //   if (
+  //     cameraPermission.status !== 'granted'
+  //   ) {
+  //     alert('Permission for media access needed.');
+  //   }
+  // }
 
-  useEffect(() => {
-    if(!cameraPermission) {
-      permissionFunction();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(!cameraPermission) {
+  //     permissionFunction();
+  //   }
+  // }, []);
   
   
 

@@ -1,13 +1,19 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
 
 import { CustomTextInput, RoundedButton } from '@/Presentation/components';
 import useViewModel from './ViewModel';
 import styles from './styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ModalPickImage } from '../../components/ModalPickImage/ModalPickImage';
+import { RootStackParams } from 'App';
+import { StackScreenProps } from '@react-navigation/stack';
+import { COLORS } from '@/Presentation/theme/appTheme';
 
+interface RegisterScreenProps
+  extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {
     fullName,
@@ -20,9 +26,17 @@ export const RegisterScreen = () => {
     pickImage,
     file: image,
     takePhoto,
+    user,
+    loading,
   } = useViewModel();
 
-  const [modalVisible, setModalVisible] = useState(false);
+  useEffect(() => {
+    if (user && user.sessionToken) {
+      navigation.replace('ProfileInfoScreen');
+    }
+  }, [user]);
+
+  
 
   const imgSrc = !image ? require('@/assets/user_image.png') : { uri: image.uri };
   
@@ -98,6 +112,13 @@ export const RegisterScreen = () => {
             setModalUseState={setModalVisible}
           />
 
+          { loading && (
+            <ActivityIndicator
+              style={styles.loading}
+              size="large"
+              color={COLORS.primary} />
+          )}
+        
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
