@@ -4,14 +4,23 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '@/Presentation/views/home/Home';
 import { RegisterScreen } from '@/Presentation/views/register/Register';
 import { ProfileInfoScreen } from '@/Presentation/views/profile/info/ProfileInfo';
+import { RolesScreen } from '@/Presentation/views/Roles/Roles';
+import { usePushNotification } from '@/Presentation/hooks/usePushNotification';
 
 export type RootStackParams = {
   HomeScreen: undefined;
   RegisterScreen: undefined;
   ProfileInfoScreen: undefined;
+  RolesScreen: undefined;
 }
 
 export default function App() {
+
+  const { expoPushToken, notification } = usePushNotification();
+
+  const data = JSON.stringify(notification, null, 2);
+
+  console.log('DATA', data)
   
   const Stack = createNativeStackNavigator<RootStackParams>();
 
@@ -43,6 +52,14 @@ export default function App() {
           options={{
             ...pageOptions,
             title: 'Perfil',
+          }}
+        />
+
+        <Stack.Screen name="RolesScreen"
+          component={RolesScreen}
+          options={{
+            ...pageOptions,
+            title: 'Roles',
           }}
         />
       </Stack.Navigator>
