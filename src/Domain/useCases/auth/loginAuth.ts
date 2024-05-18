@@ -1,5 +1,4 @@
 import { AuthRepositoryImpl } from "@/Data/repositories/AuthRepository";
-import { User } from "@/Domain/entities/User";
 
 const { login } = new AuthRepositoryImpl();
 

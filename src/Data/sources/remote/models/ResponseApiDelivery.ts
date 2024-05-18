@@ -4,12 +4,20 @@ export interface ResponseApiDelivery {
   message: string;
 }
 
+export interface Store {
+  id:  string;
+  name: string;
+  description: string;
+  slug: string;
+}
+
 export interface ResponseRegisterApi {
   email:    string;
   fullName: string;
   id:       string;
   isActive: boolean;
   roles:    string[];
+  stores:   Store[];
   token:    string;
 }
 

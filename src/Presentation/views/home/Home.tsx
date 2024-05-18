@@ -35,6 +35,14 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   useEffect(() => {
     if (user && user.sessionToken) {
+
+      console.log('User', user)
+      
+      if(user.roles?.length > 1) {
+        navigation.replace('ProfileInfoScreen');
+        return;
+      }
+
       navigation.replace('ProfileInfoScreen');
     }
   }, [user]);

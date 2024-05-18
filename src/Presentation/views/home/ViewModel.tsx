@@ -42,6 +42,9 @@ const HomeViewModel = () => {
       email: response.data.email,
       sessionToken: response.data.token,
       password: '',
+      profilImg: response.data.profileImg,
+      roles: response.data.roles,
+      stores: response.data.stores,
     });
 
     getUserSession();

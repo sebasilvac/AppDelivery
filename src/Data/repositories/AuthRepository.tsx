@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 
-import { User } from '@/Domain/entities/User';
 import { AuthRepository } from '@/Domain/repositories/AuthRepository';
 import ApiDelivery, { ApiDeliveryFormData } from '../sources/remote/api/ApiDelivery';
 import {
@@ -9,10 +8,11 @@ import {
   ResponseRegisterApi
 } from '../sources/remote/models/ResponseApiDelivery';
 import { ImagePickerAsset } from 'expo-image-picker';
+import { UserRegisterPayload } from '@/Domain/entities';
 
 export class AuthRepositoryImpl implements AuthRepository {
 
-  async register(user: User): Promise<ResponseApiDelivery> {
+  async register(user: UserRegisterPayload): Promise<ResponseApiDelivery> {
     try {
       const response = await ApiDelivery.post<ResponseRegisterApi>('/auth/signup', user);
 
@@ -33,7 +33,7 @@ export class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  async registerWithImage(user: User, file: ImagePickerAsset): Promise<ResponseApiDelivery> {
+  async registerWithImage(user: UserRegisterPayload, file: ImagePickerAsset): Promise<ResponseApiDelivery> {
     try {
       let data = new FormData();
       const fileName = file.uri.split('/').pop();
@@ -83,6 +83,9 @@ export class AuthRepositoryImpl implements AuthRepository {
   async login(email: string, password: string): Promise<ResponseApiDelivery> {
 
     try {
+      console.log('email', email);
+      console.log('password', password);
+      
       const response = await ApiDelivery.post<ResponseRegisterApi>('/auth/signin', { email, password });
 
       return Promise.resolve({
@@ -91,6 +94,8 @@ export class AuthRepositoryImpl implements AuthRepository {
         data: response.data as ResponseRegisterApi,
       });
     } catch (error) {
+
+      console.error('Error', error);
       
       let e = (error as AxiosError);
       const dataError = e.response?.data as ErrorResponseRegisterAPI;

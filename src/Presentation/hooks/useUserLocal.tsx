@@ -7,6 +7,8 @@ const useUserLocal = () => {
 
   const getUserSession = async () => {
     const user = await GetUserLocalUseCase();
+
+    console.log('USUARIOOOO', user)
     setUser(user);
   }
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { RegisterAuthUseCase } from '@/Domain/useCases/auth/registerAuth';
-import { User } from '@/Domain/entities/User';
 import { useImagePicker, useUserLocal } from '@/Presentation/hooks';
 import { RegisterWithImageAuthUseCase } from '@/Domain/useCases/auth/registerWithImageAuth';
 import { SaveUserLocalUseCase } from '@/Domain/useCases/userLocal/SaveUserLocal';
+import { UserRegisterPayload } from '@/Domain/entities';
 
 const RegisterViewModel = () => {
   const [loading, setLoading] = useState(false);
@@ -45,16 +45,16 @@ const RegisterViewModel = () => {
 
     setLoading(true);
 
-    const user: User = {
+    const userPayload: UserRegisterPayload = {
       fullName: values.fullName,
       email: values.email,
       password: values.password,
     }
 
     //const response = await RegisterAuthUseCase(user);
-    const response = file ? await RegisterWithImageAuthUseCase(user, file) : await RegisterAuthUseCase(user);
+    const response = file ? await RegisterWithImageAuthUseCase(userPayload, file) : await RegisterAuthUseCase(userPayload);
     setLoading(false);
-    
+
     if (!response.success) {
       setErrorMessage(response.message);
       return;
@@ -65,6 +65,7 @@ const RegisterViewModel = () => {
       fullName: response.data.fullName,
       email: response.data.email,
       sessionToken: response.data.token,
+      roles: response.data.roles,
       password: '',
     });
 
